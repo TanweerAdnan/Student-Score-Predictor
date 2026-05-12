@@ -1,5 +1,6 @@
 import streamlit as st
 import joblib
+from database import cursor
 import pandas as pd
 import streamlit as st
 
@@ -30,10 +31,37 @@ st.title("🎓 Student Score Predictor")
 # =========================
 # INPUT FIELDS
 # =========================
-hours = st.number_input("Hours Studied", 0.0, 24.0)
-attendance = st.number_input("Attendance", 0.0, 100.0)
-previous = st.number_input("Previous Score", 0.0, 100.0)
-sleep = st.number_input("Sleep Hours", 0.0, 12.0)
+hours = st.number_input(
+    "Hours Studied",
+    min_value=0.0,
+    max_value=24.0,
+    value=None,
+    placeholder="Enter study hours"
+)
+
+attendance = st.number_input(
+    "Attendance",
+    min_value=0.0,
+    max_value=100.0,
+    value=None,
+    placeholder="Enter attendance percentage"
+)
+
+previous = st.number_input(
+    "Previous Score",
+    min_value=0.0,
+    max_value=100.0,
+    value=None,
+    placeholder="Enter previous score"
+)
+
+sleep = st.number_input(
+    "Sleep Hours",
+    min_value=0.0,
+    max_value=12.0,
+    value=None,
+    placeholder="Enter sleep hours"
+)
 
 motivation = st.selectbox("Motivation Level", ["Low", "Medium", "High"])
 teacher = st.selectbox("Teacher Quality", ["Poor", "Average", "Good"])
@@ -50,6 +78,16 @@ activities = st.selectbox("Extracurricular Activities", ["Yes", "No"])
 # PREDICTION BUTTON
 # =========================
 if st.button("Predict Score"):
+    # Check empty fields
+    if (
+        hours is None or
+        attendance is None or
+        previous is None or
+        sleep is None
+    ):
+        st.error("Please fill all numeric fields")
+
+        st.stop()
 
     # Create input dictionary
     data = {
@@ -98,6 +136,19 @@ if st.button("Predict Score"):
     st.success(f"🎯 Predicted Exam Score: {final_score}")
 
 # =========================
+# SHOW REGISTERED USERS
+# =========================
+if st.checkbox("Show Registered Users"):
+
+    cursor.execute(
+        "SELECT id, username, email FROM users"
+    )
+
+    users = cursor.fetchall()
+
+    st.table(users)
+
+# =========================
 # LOGOUT BUTTON
 # =========================
 st.markdown("---")
@@ -107,3 +158,4 @@ if st.button("Logout"):
     st.session_state.clear()
 
     st.switch_page("pages/1_Login.py")
+    
