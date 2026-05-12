@@ -17,13 +17,13 @@ if "logged_in" not in st.session_state:
 
         if st.button("Login"):
 
-            st.switch_page("pages/1_Login.py")
+            st.switch_page("pages/login.py")
 
     with col2:
 
         if st.button("Register"):
 
-            st.switch_page("pages/2_Register.py")
+            st.switch_page("pages/register.py")
 
     st.stop()
 # =========================
@@ -171,5 +171,5 @@ if st.button("Logout"):
 
     st.session_state.clear()
 
-    st.switch_page("pages/1_Login.py")
+    st.switch_page("login.py")
     
