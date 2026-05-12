@@ -17,16 +17,15 @@ if "logged_in" not in st.session_state:
 
         if st.button("Login"):
 
-            st.switch_page("1_Login.py")
+            st.switch_page("pages/1_Login.py")
 
     with col2:
 
         if st.button("Register"):
 
-            st.switch_page("2_Register.py")
+            st.switch_page("pages/2_Register.py")
 
     st.stop()
-
 # =========================
 # WELCOME MESSAGE
 # =========================
