@@ -1,6 +1,65 @@
 import streamlit as st
 import joblib
 import pandas as pd
+import streamlit as st
+from auth import register_user, login_user
+
+st.title("Student Performance EDA Project")
+
+menu = ["Login", "Register"]
+
+choice = st.sidebar.selectbox("Menu", menu)
+
+# REGISTER
+if choice == "Register":
+
+    st.subheader("Create New Account")
+
+    username = st.text_input("Username")
+    email = st.text_input("Email")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Register"):
+
+        success = register_user(username, email, password)
+
+        if success:
+            st.success("Account Created Successfully")
+        else:
+            st.error("User already exists")
+
+
+# LOGIN
+elif choice == "Login":
+
+    st.subheader("Login")
+
+    email = st.text_input("Email")
+    password = st.text_input("Password", type="password")
+
+    if st.button("Login"):
+
+        user = login_user(email, password)
+
+        if user:
+
+            st.success(f"Welcome {user[1]}")
+
+            # YOUR MAIN PROJECT CODE HERE
+            st.write("EDA Dashboard Opened")
+
+        else:
+            st.error("Invalid Credentials")
+
+from database import cursor
+
+if st.checkbox("Show Registered Users"):
+
+    cursor.execute("SELECT id, username, email FROM users")
+
+    data = cursor.fetchall()
+
+    st.table(data)
 
 # =========================
 # LOAD MODEL
@@ -82,3 +141,4 @@ if st.button("Predict Score"):
     # OUTPUT
     # =========================
     st.success(f"🎯 Predicted Exam Score: {final_score}")
+    
