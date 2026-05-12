@@ -10,6 +10,21 @@ import streamlit as st
 if "logged_in" not in st.session_state:
 
     st.warning("Please Login First")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+
+        if st.button("Login"):
+
+            st.switch_page("pages/1_Login.py")
+
+    with col2:
+
+        if st.button("Register"):
+
+            st.switch_page("pages/2_Register.py")
+
     st.stop()
 
 # =========================
